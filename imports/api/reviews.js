@@ -4,14 +4,15 @@ export const Reviews = new Mongo.Collection('reviews');
 
 let ratings = ["Poor", "Below Average", "Average", "Above Average", "Excellent", "Unknown or N/A"];
 
-Reviews.attachSchema(new SimpleSchema({
-    "reviewer": {
-        type: String,
-        label: "Reviewer"
-    },
+var reviewSchema = new SimpleSchema({
     "reviewee": {
         type: String,
-        label: "Reviewee"
+        label: "Reviewee",
+	autoform: {
+		type: "hidden",
+		label: false
+	}
+
     },
     "reviewType": {
         type: String,
@@ -204,4 +205,7 @@ Reviews.attachSchema(new SimpleSchema({
             }
         }
     }
-}));
+});
+reviewSchema.debug = true;
+
+Reviews.attachSchema(reviewSchema);
