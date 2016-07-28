@@ -5,14 +5,14 @@ import { check } from 'meteor/check'
 
 Reviews.deny({
 	insert: function(userId, doc) {
-		console.log("check:", userId, doc);
-		debugger
 		if(!(userId && doc && doc.reviewee)) {
 			return true;
 		}
 		var data = Meteor.users.findOne({_id: doc.reviewee});
-		console.log("data:", data);
 		return (data === undefined);
+	},
+	update: function() {
+		return true;
 	}
 });
 Meteor.users.deny({

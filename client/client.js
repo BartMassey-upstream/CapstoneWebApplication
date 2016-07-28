@@ -14,7 +14,6 @@ Router.route('/reviewForm/:reviewee', function(){
 			    if(error) {
 				    console.log(error);
 			    }
-			console.log("info:", result);
 			Session.set("revieweeName", result && result.name);
 			    
 		    });
