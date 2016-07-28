@@ -3,7 +3,40 @@ import { reviewSchema } from '../imports/api/reviews.js';
 import { Users } from '../imports/api/users.js';
 import { check } from 'meteor/check'
 
+Reviews.deny({
+	insert: function(userId, doc) {
+		console.log("check:", userId, doc);
+		debugger
+		if(!(userId && doc && doc.reviewee)) {
+			return true;
+		}
+		var data = Meteor.users.findOne({_id: doc.reviewee});
+		console.log("data:", data);
+		return (data === undefined);
+	}
+});
+Meteor.users.deny({
+	update: function() {
+		return true;
+	}
+});
+
 if (Meteor.isServer) {
+
+	/*
+Meteor.publish('revieweeInfo', function (id) {
+		//var info = Meteor.users.findOne({_id: id});
+		//data = {};
+		//data.name = info && info.profile && info.profile.name;
+		//data.reviewee = id;
+		//var options = {fields: {'profile': 1, _id: 1}};
+		//return Meteor.users.findOne({_id: id}, options);
+		var options = {fields: {profile:1, _id: 1}};
+		return Meteor.users.findOne({_id: id}, options);
+		//return data;
+});
+*/
+
 	
 Meteor.methods({
 	addReview: function(docId) {
@@ -21,7 +54,7 @@ Meteor.methods({
 	findReviewee: function(id) {
 		var info = Meteor.users.findOne({_id: id});
 		data = {};
-		data.name = info.profile.name;
+		data.name = info && info.profile && info.profile.name;
 		data.reviewee = id;
 		return data;
 	}

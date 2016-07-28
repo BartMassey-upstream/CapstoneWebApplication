@@ -1,12 +1,12 @@
 <template name="ReviewFormTemplate">
-    <h1>Review: {{this.name}}</h1>
+    <h1>Review: {{name}}</h1>
     <!--{{#autoForm collection=Reviews id="insertReview" type="insert" }}-->
     <!-- {{#autoForm collection=Reviews id="insertReview" type="method" meteormethod="addReview" doc=this}} -->
     {{#autoForm collection=Reviews id="insertReview" type="insert" doc=this}}
         <fieldset>
 		<!-- {{> afQuickField name='reviewer'}} -->
 		<!-- {{> afQuickField name='reviewee'}} -->
-		{{this.reviewee}}
+		{{> afQuickField name='reviewee' type="hidden"}}
             {{> afQuickField name='reviewType'}}
 
             <!-- grading options for "Technical Skill", "Work Ethic", "Communication",

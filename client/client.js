@@ -1,5 +1,6 @@
 import { Reviews } from '../imports/api/reviews.js';
 import { Users } from '../imports/api/users.js';
+import { Session } from 'meteor/session';
 
 
 Router.route('/reviewForm', function(){
@@ -14,13 +15,10 @@ Router.route('/reviewForm/:reviewee', function(){
 				    console.log(error);
 			    }
 			console.log("info:", result);
-			    return result;
+			Session.set("revieweeName", result && result.name);
 			    
 		    });
-		    return {name: "his", reviewee: "rev"};
-		    //console.log("info:", info);
-		    //return Meteor.call('findReviewee', this.params.reviewee);
-
+		    return {reviewee: this.params.reviewee};
 	    }
     });
 });
