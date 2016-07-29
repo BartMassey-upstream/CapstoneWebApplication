@@ -1,58 +1,30 @@
 import React, { Component, PropTypes } from 'react';
 import StudentInfoList from './StudentInfoList';
+import { Meteor } from 'meteor/meteor'
+import api from '../../../client/api.js';
 
 export default class StudentDashboard extends Component {
     constructor(props) {
         super(props);
-    }
 
-    getStudentData() {
-        return [
-            {
-                name: 'Bob',
-                email: 'bob@gmail.com',
-                team: 'winning team',
-                mid360: {
-                    completed: true,
-                    id: 123
-                },
-                final360: {
-                    completed: false,
-                    id: 124
-                },
-            },
-            {
-                name: 'Jessica',
-                email: 'jessica@gmail.com',
-                team: 'winning team',
-                mid360: {
-                    completed: true,
-                    id: 123
-                },
-                final360: {
-                    completed: true,
-                    id: 124
-                },
-            },
-            {
-                name: 'Sam',
-                email: 'sam@gmail.com',
-                team: 'winning team',
-                mid360: {
-                    completed: true,
-                    id: 123
-                },
-                final360: {
-                    completed: false,
-                    id: 124
-                },
-            },
-        ];
+        this.state = {
+            studentData: null
+        };
+    }
+    
+    componentDidMount() {
+        // getUsersForTeam returns a promise. When the promise is resolved
+        // call this.setState to store the payload in 'studentData'
+        // This will trigger a re-render of the component and pass along the payload
+        api.users.getUsersForTeam(2).then((data) => { this.setState({studentData: data}); });
     }
 
     render() {
-        return (
-            <StudentInfoList students={this.getStudentData()}/>
-        );
+        if (this.state.studentData) {
+            return (
+                <StudentInfoList students={this.state.studentData}/>
+            );
+        }
+        return (<div>Loading...</div>);
     }
 }

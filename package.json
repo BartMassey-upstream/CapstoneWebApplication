@@ -7,6 +7,7 @@
   "dependencies": {
     "meteor-node-stubs": "~0.2.0",
     "meteor-react-autoform": "^0.2.21",
+    "promise-defer": "^1.0.0",
     "react": "^15.1.0",
     "react-addons-create-fragment": "^15.1.0",
     "react-addons-css-transition-group": "^15.1.0",
