@@ -1,6 +1,6 @@
 import { Reviews } from '../imports/api/reviews.js';
 import { reviewSchema } from '../imports/api/reviews.js';
-import { Users } from '../imports/api/users.js';
+//import { Users } from '../imports/api/users.js';
 import { check } from 'meteor/check'
 
 Reviews.deny({
