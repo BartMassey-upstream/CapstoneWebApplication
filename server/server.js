@@ -1,6 +1,4 @@
 import { Reviews } from '../imports/api/reviews.js';
-//import { Users } from '../imports/api/users.js';
-
 
 // route to display all reviews that a specified reviewer has submitted
 Router.route('/reviews/:_id', {where: 'server'})
@@ -8,12 +6,8 @@ Router.route('/reviews/:_id', {where: 'server'})
         var response;
         if(this.params._id !== undefined){
             var options = {fields: {reviews: 1, _id: 0}};
-            var data = Meteor.users.find({_id: this.params._id}).fetch();
-            var reviewData = {};
-
-            if(data[0] !== undefined){
-                reviewData = Reviews.find({_id: {$in: data[0].reviews}}).fetch();
-            }
+            var data = Meteor.users.findOne({_id: this.params._id}, options);
+	    var reviewData = Reviews.find({_id: {$in: data && data.reviews}}).fetch();
 
             if(reviewData.length > 0){
                 response = reviewData
@@ -34,12 +28,8 @@ Router.route('/reviews/:_id/type/:reviewType', {where: 'server'})
         var response;
         if(this.params._id !== undefined){
             var options = {fields: {reviews: 1, _id: 0}};
-            var data = Meteor.users.find({_id: this.params._id}).fetch();
-            var reviewData = {};
-
-            if(data[0] !== undefined){
-                reviewData = Reviews.find({_id: {$in: data[0].reviews}, reviewType: this.params.reviewType}).fetch();
-            }
+            var data = Meteor.users.findOne({_id: this.params._id}, options);
+            var reviewData = Reviews.find({_id: {$in: data && data.reviews}, reviewType: this.params.reviewType}).fetch();
 
             if(reviewData.length > 0){
                 response = reviewData
@@ -60,12 +50,8 @@ Router.route('/reviews/:_id/:reviewee', {where: 'server'})
         var response;
         if(this.params._id !== undefined){
             var options = {fields: {reviews: 1, _id: 0}};
-            var data = Meteor.users.find({_id: this.params._id}).fetch();
-            var reviewData = {};
-
-            if(data[0] !== undefined){
-                reviewData = Reviews.find({_id: {$in: data[0].reviews}, reviewee: this.params.reviewee}).fetch();
-            }
+            var data = Meteor.users.findOne({_id: this.params._id}, options);
+            var reviewData = Reviews.find({_id: {$in: data && data.reviews}, reviewee: this.params.reviewee}).fetch();
 
             if(reviewData.length > 0){
                 response = reviewData
