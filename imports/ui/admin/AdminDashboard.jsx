@@ -1,67 +1,80 @@
 import React, { Component, PropTypes } from 'react';
 import AdminInfoList from './AdminInfoList';
+import { Meteor } from 'meteor/meteor'
+import { createContainer } from 'meteor/react-meteor-data';
+import api from '../../../client/api.js';
+
 
 export default class AdminDashboard extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            user: null,
+            teamData: null,
+        };
+
+        mixins: [
+            Router.State, Router.Navigation, ReactMeteorData
+        ];
     }
 
-    getAdminData() {
-        return {
-            teams: [1,2,3,4,5],
-            roles: ['admin', 'student', 'team lead'],
-            students: [
-            {
-                name: 'testingNameOne',
-				role: 'team leader',
-				team: 3,
-                email: 'test@gmail.com',
-                mid360: {
-                    completed: true,
-                    id: 123
-                },
-                final360: {
-                    completed: false,
-                    id: 124
-                },
-				resume: {
-					completed: false,
-					id: 100
-				},
+	    componentDidMount() {
+	        if(this.props.user) {
 
-            },
-            {
-                name: 'testingNameTwo',
-				role: 'team member',
-				team: 2,
-                email: 'test@gmail.com',
-                mid360: {
-                    completed: true,
-                    id: 123
-                },
-                final360: {
-                    completed: false,
-                    id: 124
-                },
-				resume: {
-					completed: true,
-					id: 100
-				},
-            },
-        ]};
+	        }
+	    }
+
+	    setTeamData() {
+	        api.users.getUsersForTeam(this.props.user.team).then(
+	            (data) => {
+	                this.setState({teamData: data});
+	            }
+	        );
+	    }
+  
+	
+    getCurrentUserDocument() {
+        // look through the list of users on this team and get the one that is the current logged in user
+        return _.find(this.state.teamData, (user) => {
+            if(user._id === this.props.user._id) {
+                return user;
+            }
+        });
     }
 
-    render() {
-        if(!Meteor.user() || Meteor.user().role !== "admin") {
-            return (
-                <h2>NIce try hacker</h2>
-            );
+    getAdminDashboard() {
+        if(!this.state.teamData) {
+            this.setTeamData();
         }
+
         return (
             <div>
                 <h2>Admin Dashboard</h2>
-                <AdminInfoList data={this.getAdminData()}/>
+                <AdminInfoList user={this.getCurrentUserDocument()} students={this.state.teamData}/>
             </div>
         );
     }
+
+    render() {
+        if(this.props.loggingIn) {
+            return (<h4>Loggin In...</h4>);
+        } else if (!this.props.loggingIn && this.props.user){
+            return (
+                <div>
+                    {this.getAdminDashboard()}
+                </div>
+            );
+        } else {
+            return (<h4>Please Log In</h4>);
+        }
+
+    }
 }
+
+export default createContainer(() => ({
+    user: Meteor.user(),
+    loggedIn: !Meteor.userId(),
+    loggingIn: Meteor.loggingIn()
+}), AdminDashboard);
+

@@ -8,10 +8,10 @@ export default class AdminInfoList extends Component {
     }
 
     renderAdminInfoList() {
-        return this.props.data.students.map((student) => {
+        return this.props.students.map((student) => {
             return (
                 <tbody>
-                    <AdminInfo student={student} teams={this.props.data.teams} roles={this.props.data.roles}/>
+                    <AdminInfo student={student} teams={this.props.teams} roles={this.props.roles}/>
                 </tbody>
             );
         });
@@ -22,7 +22,7 @@ export default class AdminInfoList extends Component {
             <thead>
                 <tr>
                     <th>Name</th>
-					<th>Role</th>
+				 	<th>Role</th>
 					<th>Team</th>
                     <th>Email</th>
 					<th>Resume</th>
@@ -35,13 +35,26 @@ export default class AdminInfoList extends Component {
     }
 
     render() {
+        if(!this.props.students) {
+            const style = {
+                width: '50%',
+                margin: '0 auto'
+            }
+            return (
+                <div style={style}>
+                    <h2>No Team Data</h2>
+                </div>
+            );
+        }
+
         return (
-  		  <Panel defaultExpanded header="Admin" bsStyle="info">
-      	  	<Table fill striped bordered condensed>
-				{this.getAdminInfoHeader()}
-           	 	{this.renderAdminInfoList()}
-       		</Table>
-   		 </Panel>
+            <Panel defaultExpanded header="Your Team" bsStyle="info">
+                <Table fill striped bordered condensed>
+                    {this.getAdminInfoHeader()}
+                    {this.renderAdminInfoList()}
+                </Table>
+            </Panel>
         );
     }
 }
+  

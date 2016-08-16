@@ -1,132 +1,40 @@
 import React, { Component, PropTypes } from 'react';
 import {Button, Modal, OverlayTrigger, Tooltip, DropdownButton, MenuItem} from 'react-bootstrap';
 
+import ModalButtonComplete from '../ModalButtonComplete';
+import ModalButtonIncomplete from '../ModalButtonIncomplete';
+
 import ReviewForm from '../forms/ReviewForm';
 import ResumeForm from '../forms/ResumeForm';
+import _ from 'lodash';
 
 export default class AdminInfo extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            showModal: false
-        };
-
-        this.closeModal = this.closeModal.bind(this);
-        this.openModal = this.openModal.bind(this);
-    }
-
-    closeModal() {
-        this.setState({showModal: false});
-    }
-
-    openModal() {
-        this.setState({showModal: true});
     }
 	
-    getSubmittedButton() {
-        return(
-            <div>
-                <OverlayTrigger delayShow="400" placement="left" overlay={<Tooltip>This 360 review form is complete</Tooltip>}>
-                    <Button bsStyle="success" bsSize="xsmall">
-                        <span className="glyphicon glyphicon-ok"/>
-                    </Button>
-                </OverlayTrigger>
-            </div>
-        );
-    }
+    getReviewForUser(type) {
+        let review = null;
 
-    getUnsubmittedButton() {
-        return(
-            <OverlayTrigger delayShow="400" placement="left" overlay={<Tooltip>Please complete this 360 review form</Tooltip>}>
-                <Button bsStyle="danger" bsSize="xsmall" onClick={this.openModal}>
-                    <span className="glyphicon glyphicon-remove"/>
-                </Button>
-            </OverlayTrigger>
-        );
-    }
-	
-    getSubmittedButtonResume() {
-        return(
-            <div>
-                <OverlayTrigger delayShow="400" placement="left" overlay={<Tooltip>This resume form is complete</Tooltip>}>
-                    <Button bsStyle="success" bsSize="xsmall">
-                        <span className="glyphicon glyphicon-ok"/>
-                    </Button>
-                </OverlayTrigger>
-            </div>
-        );
-    }
-
-    getUnsubmittedButtonResume() {
-        return(
-            <OverlayTrigger delayShow="400" placement="left" overlay={<Tooltip>Please complete this resume form</Tooltip>}>
-                <Button bsStyle="danger" bsSize="xsmall" onClick={this.openModal}>
-                    <span className="glyphicon glyphicon-remove"/>
-                </Button>
-            </OverlayTrigger>
-        );
-    }
-	
-    getResumeForm() {
-        return (
-            <div>
-                {this.getUnsubmittedButtonResume()}
-                <Modal bsSize ="large" show={this.state.showModal} onHide={this.closeModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Resume</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <ResumeForm/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.closeModal}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-        );
-    }
-
-    get360Form() {
-        return (
-            <div>
-                {this.getUnsubmittedButton()}
-                <Modal bsSize ="large" show={this.state.showModal} onHide={this.closeModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>360 Review</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <ReviewForm/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.closeModal}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-        );
-    }
-
-    getMid360Field() {
-        if(this.props.student.mid360.completed) {
-            return (
-                this.getSubmittedButton()
-            );
-        } else {
-            return (
-                this.get360Form()
-            );
+        if(type === 'midterm') {
+             review = _.find(this.props.user.reviews, (review) => {
+                return review.reviewee === this.props.student._id && review.reviewType === 'Midterm';
+            });
+        } else if (type === 'final') {
+            review = _.find(this.props.user.reviews, (review) => {
+                return review.reviewee === this.props.student._id && review.reviewType === 'Final';
+            });
         }
+        return review;
     }
-
-    getFinal360Field() {
-        if(this.props.student.final360.completed) {
-            return (
-                this.getSubmittedButton()
-            );
+	
+    get360ReviewField(type) {
+        const review = this.getReviewForUser(type);
+        if (!review) {
+            return <ModalButtonIncomplete user={this.props.user} reviewType={type} student={this.props.student}/>
         } else {
-            return (
-                this.get360Form()
-            );
+            return <ModalButtonComplete review={review}/>
         }
     }
 	
@@ -151,6 +59,7 @@ export default class AdminInfo extends Component {
             </DropdownButton>
         );
     }
+	
 
     getRoleDropdown() {
         return (
@@ -161,13 +70,14 @@ export default class AdminInfo extends Component {
             </DropdownButton>
         );
     }
+	
     render() {
         return (
                 <tr>
-                    <td>{this.props.student.name}</td>
-					<td>{this.getRoleDropdown()}</td>
-					<td>{this.getTeamDropdown()}</td>
-                    <td>{this.props.student.email}</td>
+                    <td>{this.props.student.services.google.name}</td>
+				<td>{this.getRoleDropdown()}</td>
+				<td>{this.getTeamDropdown()}</td>
+                    <td>{this.props.student.services.google.email}</td>
 					<td>
 						<center>
 							{this.getResumeField()}
@@ -175,12 +85,12 @@ export default class AdminInfo extends Component {
 					</td>
                     <td>
                         <center>
-                            {this.getMid360Field()}
+                            {this.get360ReviewField('midterm')}
                         </center>
                     </td>
                     <td>
                         <center>
-                            {this.getFinal360Field()}
+                            {this.get360ReviewField('final')}
                         </center>
                     </td>
                 </tr>

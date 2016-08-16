@@ -10,7 +10,7 @@ export default class StudentDashboard extends Component {
 
         this.state = {
             user: null,
-            teamData: null
+            teamData: null,
         };
 
         mixins: [
@@ -31,6 +31,7 @@ export default class StudentDashboard extends Component {
             }
         );
     }
+	
     getCurrentUserDocument() {
         // look through the list of users on this team and get the one that is the current logged in user
         return _.find(this.state.teamData, (user) => {
@@ -68,9 +69,6 @@ export default class StudentDashboard extends Component {
 
     }
 }
-
-
-
 
 export default createContainer(() => ({
     user: Meteor.user(),

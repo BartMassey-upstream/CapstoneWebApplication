@@ -1,8 +1,8 @@
 db.users.update(
-    {_id: <METEOR_USER_ID>},
+    {_id: "e4YigzWCjJQhBnmfy"},
     {$push: {"reviews": {
         "_id": "57ac8d288700de7b7abe4dzz",
-        "reviewer": <METEOR_USER_ID>,
+        "reviewer": "e4YigzWCjJQhBnmfy" ,
         "reviewee": "57ac8d2861e630d5563a1bf8",
         "revieweeName": "Wendy Bray",
         "reviewType": "Midterm",
@@ -27,10 +27,10 @@ db.users.update(
 )
 
 db.users.update(
-      {_id: <METEOR_USER_ID>},
+      {_id: "e4YigzWCjJQhBnmfy"},
       {$push: {"reviews": {
         "_id": "57ac8d281d6ab55942d0f4zz",
-        "reviewer": <METEOR_USER_ID>,
+        "reviewer": "e4YigzWCjJQhBnmfy",
         "reviewee": "57ac8d2817ebc1bd2f6ceb10",
         "revieweeName": "Rochelle Erickson",
         "reviewType": "Midterm",
@@ -55,10 +55,10 @@ db.users.update(
 )
 
 db.users.update(
-      {_id: <METEOR_USER_ID>},
+      {_id: "e4YigzWCjJQhBnmfy"},
       {$push: {"reviews": {
         "_id": "57ac8d28f8e5ca826a1238zz",
-        "reviewer": <METEOR_USER_ID>,
+        "reviewer": "e4YigzWCjJQhBnmfy",
         "reviewee": "57ac8d2817ebc1bd2f6ceb10",
         "revieweeName": "Rochelle Erickson",
         "reviewType": "Final",
@@ -82,10 +82,10 @@ db.users.update(
       }}}
 )
 db.users.update(
-      {_id: <METEOR_USER_ID>},
+      {_id: "e4YigzWCjJQhBnmfy"},
       {$push: {"reviews": {
          "_id": "57ac8d28b00146d30d6caezz",
-         "reviewer": <METEOR_USER_ID>,
+         "reviewer": "e4YigzWCjJQhBnmfy",
          "reviewee": "57ac8d28f0fb7fc2e0d5f0ab",
          "revieweeName": "Bates Benson",
          "reviewType": "Midterm",
