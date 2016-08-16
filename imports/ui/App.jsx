@@ -10,7 +10,7 @@ Template.registerHelper("Resumes", Resumes);
 export default class App extends Component {
     render() {
         return (
-            <div>
+            <div id="wrapper">
                 <div id="banner">
                     <div id="psuBarIcon"></div>
                     <p id="psuHeaderText">Portland State University Capstone Website</p>
@@ -20,6 +20,10 @@ export default class App extends Component {
                 <br/>
                 <br/>
                 {this.props.children}
+				
+				<div id="footer">
+					<p id="footerText">CS Capstone | PSU</p>
+				</div>
             </div>
         );
     }
