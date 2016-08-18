@@ -28,6 +28,8 @@ export default class AdminInfo extends Component {
         }
         return review;
     }
+
+
 	
     get360ReviewField(type) {
         const review = this.getReviewForUser(type);
@@ -37,18 +39,18 @@ export default class AdminInfo extends Component {
             return <ModalButtonComplete review={review}/>
         }
     }
-	
-	getResumeField() {
-		if(this.props.student.resume.completed) {
-			return (
-				this.getSubmittedButtonResume()
-			);
-		} else {
-			return (
-				this.getResumeForm()
-			);
-		}			
-	}
+
+	// getResumeField() {
+	// 	if(this.props.student.resume.completed) {
+	// 		return (
+	// 			// this.getSubmittedButtonResume()
+	// 		);
+	// 	} else {
+	// 		return (
+	// 			// this.getResumeForm()
+	// 		);
+	// 	}
+	// }
 
     getTeamDropdown() {
         return (
@@ -59,7 +61,6 @@ export default class AdminInfo extends Component {
             </DropdownButton>
         );
     }
-	
 
     getRoleDropdown() {
         return (
@@ -75,12 +76,12 @@ export default class AdminInfo extends Component {
         return (
                 <tr>
                     <td>{this.props.student.services.google.name}</td>
-				<td>{this.getRoleDropdown()}</td>
-				<td>{this.getTeamDropdown()}</td>
+					<td>{this.getRoleDropdown()}</td>
+					<td>{this.getTeamDropdown()}</td>
                     <td>{this.props.student.services.google.email}</td>
 					<td>
 						<center>
-							{this.getResumeField()}
+							{/*{this.getResumeField()}*/}
 						</center>
 					</td>
                     <td>

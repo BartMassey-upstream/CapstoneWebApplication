@@ -19,6 +19,16 @@ export default class AdminDashboard extends Component {
         ];
     }
 
+    getRoles() {
+
+        return ['team-member', 'team-lead', 'admin'];
+    }
+
+    getTeams() {
+        return ['1','2','3','4','5','6','7','8','9','10'];
+    }
+
+
 	    componentDidMount() {
 	        if(this.props.user) {
 
@@ -51,14 +61,17 @@ export default class AdminDashboard extends Component {
         return (
             <div>
                 <h2>Admin Dashboard</h2>
-                <AdminInfoList user={this.getCurrentUserDocument()} students={this.state.teamData}/>
+                <AdminInfoList user={this.getCurrentUserDocument()}
+                               students={this.state.teamData}
+                               roles={this.getRoles()}
+                               teams={this.getTeams()}/>
             </div>
         );
     }
 
     render() {
         if(this.props.loggingIn) {
-            return (<h4>Loggin In...</h4>);
+            return (<h4>Logging In...</h4>);
         } else if (!this.props.loggingIn && this.props.user){
             return (
                 <div>
