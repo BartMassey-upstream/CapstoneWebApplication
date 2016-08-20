@@ -14,12 +14,24 @@ Accounts.onCreateUser((options, user) => {
     return user
 });
 
-Accounts.validateNewUser((user) => {
-    let whitelist = Assets.getText('whitelist.csv');
-
+function checkWhitelist(user, whitelist) {
     if(user.services && user.services.google && user.services.google.email && whitelist.search(user.services.google.email) != -1) {
         return true;
     } else {
         throw new Meteor.Error(403, "This Email Address is not allowed.");
     }
+}
+
+Accounts.validateNewUser((user) => {
+    var whitelist;
+
+    try {
+        whitelist = Assets.getText('whitelist.csv');
+    } catch(err) {
+        //if err then allow all emails else check whitelist
+        return true;
+    }
+    
+    return checkWhitelist(user, whitelist)
+
 });
