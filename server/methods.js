@@ -69,7 +69,7 @@ if(Meteor.isServer) {
             var accessCheck = Meteor.users.findOne({_id: Meteor.userId()});
             if (accessCheck && (accessCheck.role === 'admin' || accessCheck.team === teamId )) {
                 data = Meteor.users.find({_id: Meteor.userId()}).fetch();
-		data.push(Meteor.users.find({team: teamId}, {fields:  {
+		data.push(Meteor.users.find({_id: {$nin: [Meteor.userId()]}, team: teamId}, {fields:  {
                     team: 1,
                     role: 1,
                     'services.google.name': 1,
